@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+	<wb-module deploy-name="WebServerTPO">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+		<wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+		<wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="TPO_Distribuidas.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/TPO_Distribuidas/TPO_Distribuidas">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jtds-1.2.5.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/jtds-1.2.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dom4j-1.6.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/dom4j-1.6.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate3.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/hibernate3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jta-1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/jta-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="antlr-2.7.6.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/antlr-2.7.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="javassist-3.4.GA.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/javassist-3.4.GA.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-annotations.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/hibernate-annotations.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ejb3-persistence.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/ejb3-persistence.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging-1.1.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/commons-logging-1.1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-commons-annotations.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/hibernate-commons-annotations.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-collections-3.1.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/mponsa/eclipse-workspace-tpo-distribuidas/TPO_Distribuidas/lib/commons-collections-3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+		<property name="java-output-path" value="target/classes"/>
+        <property name="context-root" value="mywebserver"/>
+	</wb-module>
+</project-modules>
