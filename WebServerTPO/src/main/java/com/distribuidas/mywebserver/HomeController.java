@@ -45,7 +45,7 @@ public class HomeController {
 	  return "home"; }
 	 
 	
-	@RequestMapping(value = "/clientes", method = RequestMethod.GET)
+	@RequestMapping(value = "/clientes", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getClientes() throws JsonProcessingException{
 		List<ClienteView> list = Controlador.getInstancia().getClientes();
 		ObjectMapper mapper = new ObjectMapper();
