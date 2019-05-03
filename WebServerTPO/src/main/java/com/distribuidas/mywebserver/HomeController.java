@@ -2,6 +2,7 @@ package com.distribuidas.mywebserver;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -11,8 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import controlador.Controlador;
 import exceptions.ClienteException;
+import view.ClienteView;
 /**
  * Handles requests for the application home page.
  */
@@ -39,17 +45,13 @@ public class HomeController {
 	  return "home"; }
 	 
 	
-	@RequestMapping(value = "/crearPedido", method = RequestMethod.GET)
-	public @ResponseBody String prueba() {		
-		try {
-			return Integer.toString(Controlador.getInstancia().crearPedido("30-3992034-1"));
-		} catch (ClienteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "a";
+	@RequestMapping(value = "/clientes", method = RequestMethod.GET)
+	public @ResponseBody String getClientes() throws JsonProcessingException{
+		List<ClienteView> list = Controlador.getInstancia().getClientes();
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(list);
 	}
-	
+
 	
 	
 	
