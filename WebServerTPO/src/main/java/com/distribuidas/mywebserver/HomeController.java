@@ -1,5 +1,6 @@
 package com.distribuidas.mywebserver;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -110,59 +111,38 @@ public class HomeController {
 	}
 	
 	
-	
-	@RequestMapping(value = "/productosRubro", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody String getProductosByRubro(@RequestBody RubroView rubro) throws JsonProcessingException{
+	/**Probed**/
+	@RequestMapping(value = "/productosRubro", method = RequestMethod.POST, produces = "application/json", consumes="application/json")
+	public @ResponseBody String getProductosByRubro(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
-		List<ProductoView> list = Controlador.getInstancia().getProductosByRubro(rubro);
-		return mapper.writeValueAsString(list);
+		try {
+			List<ProductoView> list = Controlador.getInstancia().getProductosByRubro(mapper.readValue(jsonStr, RubroView.class));
+			return mapper.writeValueAsString(list);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return(e.getMessage());
+		}
+		
+		
 	}
 	
 	
 	/**Probed**/
-	@RequestMapping(value = "/productosSubRubro", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getProductosBySubRubro(@RequestParam int subRubroId) throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		SubRubroView subRubro;
-		try {
-			subRubro = Controlador.getInstancia().getSubRubroById(subRubroId);
-		} catch (SubRubroException e) {
-			// TODO Auto-generated catch block
-			return mapper.writeValueAsString(e.getMessage());
-		}
-		List<ProductoView> list = Controlador.getInstancia().getProductosBySubRubro(subRubro);
-		return mapper.writeValueAsString(list);
-	}
-	
-	
-	/**Probed**/
-	@RequestMapping(value = "/rubro", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getRubroById(@RequestParam int id) throws JsonProcessingException{
+	@RequestMapping(value = "/productosSubRubro", method = RequestMethod.POST, produces = "application/json", consumes="application/json")
+	public @ResponseBody String getProductosBySubRubro(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			RubroView rubro = Controlador.getInstancia().getRubroById(id);
-			return mapper.writeValueAsString(rubro);
-		} catch (RubroException e) {
+			List<ProductoView> list = Controlador.getInstancia().getProductosBySubRubro(mapper.readValue(jsonStr, SubRubroView.class));
+			return mapper.writeValueAsString(list);
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			return mapper.writeValueAsString(e.getMessage());
+			e.printStackTrace();
+			return(e.getMessage());
 		}
 	}
 	
-	
-	/**Probed**/
-	@RequestMapping(value = "/subRubro", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getSubRubroById(@RequestParam int id) throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			SubRubroView subRubro = Controlador.getInstancia().getSubRubroById(id);
-			return mapper.writeValueAsString(subRubro);
-		} catch (SubRubroException e) {
-			// TODO Auto-generated catch block
-			return mapper.writeValueAsString(e.getMessage());
-		}
-	}
-	
-	
+		
 	/**Probed**/
 	@RequestMapping(value = "/crearPedido", method = RequestMethod.POST, produces = "application/json")
 		public @ResponseBody String crearPedido(@RequestHeader(value = "cuit") String cuit) throws JsonProcessingException{
@@ -174,6 +154,22 @@ public class HomeController {
 				return mapper.writeValueAsString(e.getMessage());
 			}
 	}
+	
+	
+	
+//	@RequestMapping(value = "/crearPedido", method = RequestMethod.POST, produces = "application/json")
+//		public @ResponseBody String crearPedidoView(@RequestBody String jsonStr) throws JsonProcessingException{
+//			ObjectMapper mapper = new ObjectMapper();
+//			try {
+//				return mapper.writeValueAsString(Controlador.getInstancia().crearPedido(mapper.readValue(jsonStr, PedidoView.class)));
+//			} catch (ClienteException e) {
+//				// TODO Auto-generated catch block
+//				return mapper.writeValueAsString(e.getMessage());
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				return mapper.writeValueAsString(e.getMessage());
+//			}
+//	}
 	
 	
 	/**Probed**/
@@ -216,20 +212,58 @@ public class HomeController {
 	}
 	
 	
-//	@RequestMapping(value = "/altaProducto",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-//	public @ResponseBody String altaProducto(@RequestBody ProductoView producto) throws JsonProcessingException {
-//		ObjectMapper mapper = new ObjectMapper();
-//		try {
-//			Controlador.getInstancia().altaProducto(producto);
-//			return "Producto creado!";
-//		} catch (RubroException e) {
-//			// TODO Auto-generated catch block
-//			return mapper.writeValueAsString(e);
-//		} catch (SubRubroException e) {
-//			// TODO Auto-generated catch block
-//			return mapper.writeValueAsString(e);
-//		}
-//	}
+	/**Probed**/
+	@RequestMapping(value = "/altaProducto",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public @ResponseBody String altaProducto(@RequestBody String jsonStr) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Controlador.getInstancia().altaProducto(mapper.readValue(jsonStr, ProductoView.class));
+			return "Producto creado!";
+		} catch (RubroException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		} catch (SubRubroException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		}
+	}
+	
+	
+	/**Probed**/
+	@RequestMapping(value = "/bajaProducto",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public @ResponseBody String bajaProducto(@RequestBody String jsonStr) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Controlador.getInstancia().bajaProducto(mapper.readValue(jsonStr, ProductoView.class));
+			return "Producto borrado!";
+		} catch (ProductoException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		}
+	}
+	
+	
+	/**Probed**/
+	@RequestMapping(value = "/modificarProducto",method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public @ResponseBody String modificarProducto(@RequestBody String jsonStr) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Controlador.getInstancia().modificaProducto(mapper.readValue(jsonStr, ProductoView.class));
+			return "Producto modificado!";
+		} catch (ProductoException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e);
+		}
+	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST , produces = "application/json" )
 	public @ResponseBody String login(@RequestHeader(value = "username") String username, @RequestHeader(value = "password") String password) throws JsonProcessingException{
