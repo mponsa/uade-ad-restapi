@@ -44,25 +44,7 @@ import view.SubRubroView;
  */
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	
-	  @RequestMapping(value = "/", method = RequestMethod.GET) public String
-	  home(Locale locale, Model model) {
-	  logger.info("Welcome home! The client locale is {}.", locale);
-	  
-	  Date date = new Date(); DateFormat dateFormat =
-	  DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-	  
-	  String formattedDate = dateFormat.format(date);
-	  
-	  model.addAttribute("serverTime", formattedDate );
-	  
-	  return "home"; }
+
 	 
 	/**Probed**/
 	@RequestMapping(value = "/clientes", method = RequestMethod.GET, produces = "application/json")
@@ -284,6 +266,8 @@ public class HomeController {
 		}
 	}
 	
+	
+	/**Probed**/
 	@RequestMapping(value = "/login", method = RequestMethod.POST , produces = "application/json" , consumes = "application/json")
 	public @ResponseBody String login(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
@@ -306,10 +290,11 @@ public class HomeController {
 		}
 	}
 	
+	
+	/**Probed**/
 	@RequestMapping(value = "/cambioPassword", method = RequestMethod.POST , produces = "application/json" ,  consumes="application/json")
 	public @ResponseBody String cambioPassword(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
-		
 		try {
 			Controlador.getInstancia().cambioPassword(mapper.readValue(jsonStr, UsuarioDTO.class).getUsuario(), mapper.readValue(jsonStr, UsuarioDTO.class).getPassword());
 			return mapper.writeValueAsString("Password actualizado");
