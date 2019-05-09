@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.distribuidas.mywebserver.dto.DetallePedidoDTO;
+import com.distribuidas.mywebserver.dto.PedidoDTO;
+import com.distribuidas.mywebserver.dto.UsuarioDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -144,12 +147,15 @@ public class HomeController {
 	
 		
 	/**Probed**/
-	@RequestMapping(value = "/crearPedido", method = RequestMethod.POST, produces = "application/json")
-		public @ResponseBody String crearPedido(@RequestHeader(value = "cuit") String cuit) throws JsonProcessingException{
+	@RequestMapping(value = "/crearPedidoCuit", method = RequestMethod.POST, produces = "application/json")
+		public @ResponseBody String crearPedido(@RequestBody String jsonStr) throws JsonProcessingException{
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				return mapper.writeValueAsString(Controlador.getInstancia().crearPedido(cuit));
+				return mapper.writeValueAsString(Controlador.getInstancia().crearPedido(mapper.readValue(jsonStr,PedidoDTO.class).getCuit()));
 			} catch (ClienteException e) {
+				// TODO Auto-generated catch block
+				return mapper.writeValueAsString(e.getMessage());
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				return mapper.writeValueAsString(e.getMessage());
 			}
@@ -157,38 +163,47 @@ public class HomeController {
 	
 	
 	
-//	@RequestMapping(value = "/crearPedido", method = RequestMethod.POST, produces = "application/json")
-//		public @ResponseBody String crearPedidoView(@RequestBody String jsonStr) throws JsonProcessingException{
-//			ObjectMapper mapper = new ObjectMapper();
-//			try {
-//				return mapper.writeValueAsString(Controlador.getInstancia().crearPedido(mapper.readValue(jsonStr, PedidoView.class)));
-//			} catch (ClienteException e) {
-//				// TODO Auto-generated catch block
-//				return mapper.writeValueAsString(e.getMessage());
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				return mapper.writeValueAsString(e.getMessage());
-//			}
-//	}
-	
-	
-	/**Probed**/
-	@RequestMapping(value = "/eliminarPedido", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String eliminarPedido(@RequestHeader(value = "numero") int numero) throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		Controlador.getInstancia().eliminarPedido(numero);
-		return mapper.writeValueAsString("Pedido Borrado");
+	@RequestMapping(value = "/crearPedido", method = RequestMethod.POST, produces = "application/json")
+		public @ResponseBody String crearPedidoView(@RequestBody String jsonStr) throws JsonProcessingException{
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				return mapper.writeValueAsString(Controlador.getInstancia().crearPedido(mapper.readValue(jsonStr, PedidoView.class)));
+			} catch (ClienteException e) {
+				// TODO Auto-generated catch block
+				return mapper.writeValueAsString(e.getMessage());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				return mapper.writeValueAsString(e.getMessage());
+			}
 	}
 	
 	
 	/**Probed**/
-	@RequestMapping(value = "/facturarPedido", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String facturarPedido(@RequestHeader(value = "numero") int numero) throws JsonProcessingException{
+	@RequestMapping(value = "/eliminarPedido", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody String eliminarPedido(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			Controlador.getInstancia().facturarPedido(numero);
+			Controlador.getInstancia().eliminarPedido(mapper.readValue(jsonStr, PedidoDTO.class).getNumeroPedido());
+			return mapper.writeValueAsString("Pedido Borrado");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		}
+		
+	}
+	
+	
+	/**Probed**/
+	@RequestMapping(value = "/facturarPedido", method = RequestMethod.POST, produces = "application/json", consumes="application/json")
+	public @ResponseBody String facturarPedido(@RequestBody String jsonStr) throws JsonProcessingException{
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			Controlador.getInstancia().facturarPedido(mapper.readValue(jsonStr, PedidoDTO.class).getNumeroPedido());
 			return mapper.writeValueAsString("Pedido Facturado");
 		} catch (PedidoException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(e.getMessage());
 		}	
@@ -196,16 +211,20 @@ public class HomeController {
 	
 	
 	/**Probed**/
-	@RequestMapping(value = "/agregarProductos", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String agregarProductosEnPedido(@RequestHeader(value = "numero") int numero, @RequestHeader(value="idProducto") int idProducto, @RequestHeader(value="cantidad") int cantidad) throws JsonProcessingException{
+	@RequestMapping(value = "/agregarProductos", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public @ResponseBody String agregarProductosEnPedido(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			Controlador.getInstancia().agregarProductoEnPedido(numero, idProducto, cantidad);;
+			DetallePedidoDTO detalle = mapper.readValue(jsonStr, DetallePedidoDTO.class);
+			Controlador.getInstancia().agregarProductoEnPedido(detalle.getId(), detalle.getProductoId(), detalle.getCantidad());
 			return mapper.writeValueAsString("Pedido modificado");
 		} catch (PedidoException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(e.getMessage());
 		} catch (ProductoException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(e.getMessage());
 		}	
@@ -265,12 +284,12 @@ public class HomeController {
 		}
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST , produces = "application/json" )
-	public @ResponseBody String login(@RequestHeader(value = "username") String username, @RequestHeader(value = "password") String password) throws JsonProcessingException{
+	@RequestMapping(value = "/login", method = RequestMethod.POST , produces = "application/json" , consumes = "application/json")
+	public @ResponseBody String login(@RequestBody String jsonStr) throws JsonProcessingException{
 		ObjectMapper mapper = new ObjectMapper();
-		logger.info("Usuario {} Password {}",username,password);
+		
 		try {
-			boolean active = Controlador.getInstancia().login(username, password);
+			boolean active = Controlador.getInstancia().login(mapper.readValue(jsonStr, UsuarioDTO.class).getUsuario(), mapper.readValue(jsonStr, UsuarioDTO.class).getPassword());
 			return mapper.writeValueAsString(active);
 		} catch (LoginException e) {
 			// TODO Auto-generated catch block
@@ -279,6 +298,28 @@ public class HomeController {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(e.getMessage());
 		} catch (UsuarioException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/cambioPassword", method = RequestMethod.POST , produces = "application/json" ,  consumes="application/json")
+	public @ResponseBody String cambioPassword(@RequestBody String jsonStr) throws JsonProcessingException{
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			Controlador.getInstancia().cambioPassword(mapper.readValue(jsonStr, UsuarioDTO.class).getUsuario(), mapper.readValue(jsonStr, UsuarioDTO.class).getPassword());
+			return mapper.writeValueAsString("Password actualizado");
+		} catch (CambioPasswordException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		} catch (UsuarioException e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(e.getMessage());
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(e.getMessage());
 		}
