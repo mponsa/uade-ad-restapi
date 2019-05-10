@@ -2,13 +2,12 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>TPO Aplicaciones Distribuidas</title>
 </head>
 <body>
 <h1>
-	Hello world!  
+	¡Bienvenido!
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
