@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.distribuidas.mywebserver.dto.DetallePedidoDTO;
 import com.distribuidas.mywebserver.dto.PedidoDTO;
 import com.distribuidas.mywebserver.dto.UsuarioDTO;
+import com.distribuidas.mywebserver.message.ErrorCode;
+import com.distribuidas.mywebserver.message.ReturnMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,7 +47,8 @@ import view.SubRubroView;
 @Controller
 public class HomeController {
 
-	 
+	ReturnMessage rm = null; 
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET) public String
 	  home(Locale locale, Model model) {
 	  //logger.info("Welcome home! The client locale is {}.", locale);
@@ -74,10 +77,10 @@ public class HomeController {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			PedidoView pedido = Controlador.getInstancia().getPedidoById(numero);
-			return mapper.writeValueAsString(pedido);
+			return mapper.writeValueAsString(new ReturnMessage(0, "", "", pedido));
 		} catch (PedidoException e) {
-			// TODO Auto-generated catch block
-			return mapper.writeValueAsString(e.getMessage());
+			// TODO Auto-generated catch block			
+			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_PEDIDO.getValue(), e.getStackTrace().toString(), e.getMessage(), "" ));
 		}
 	}
 	
