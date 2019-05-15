@@ -192,6 +192,9 @@ public class HomeController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_IO.getValue(),e.getStackTrace().toString(),e.getMessage(),null));
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_GENERICO.getValue(),e.getStackTrace().toString(),e.getMessage(),null));
 		}
 		
 	}
@@ -310,7 +313,11 @@ public class HomeController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_IO.getValue(),e.getStackTrace().toString(),e.getMessage(),null));
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_GENERICO.getValue(),e.getStackTrace().toString(),e.getMessage(),null));
 		}
+		
 	}
 	
 	
