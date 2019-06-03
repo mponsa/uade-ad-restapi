@@ -10,7 +10,8 @@ public enum ErrorCode {
 	ERROR_RUBRO(60),
 	ERROR_SUBRUBRO(70),
 	ERROR_USUARIO(80),
-	ERROR_IO(90);
+	ERROR_IO(90),
+	ERROR_GENERICO(100);
 	
 	
 	private final int id;
