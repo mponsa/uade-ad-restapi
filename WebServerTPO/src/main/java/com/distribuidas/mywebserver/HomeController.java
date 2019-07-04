@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import com.distribuidas.mywebserver.dto.DetallePedidoDTO;
 import com.distribuidas.mywebserver.dto.PedidoDTO;
 import com.distribuidas.mywebserver.dto.UsuarioDTO;
@@ -45,6 +45,7 @@ import view.SubRubroView;
  * Handles requests for the application home page.
  */
 @Controller
+@CrossOrigin(origins ="*")
 public class HomeController {
 
 	ReturnMessage rm = null; 
@@ -85,22 +86,7 @@ public class HomeController {
 	}
 	
 	
-	/** Modificación: Método para obtener los pedidos de un cliente. **/
-	@RequestMapping(value = "/pedidos/cliente", method = RequestMethod.POST, produces = "application/json")
-	public @ResponseBody String getPedidoByCliente(@RequestBody String jsonStr) throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			List<PedidoView> pedidos = Controlador.getInstancia().getPedidoByCliente(mapper.readValue(jsonStr, ClienteView.class).getNumero());
-			return mapper.writeValueAsString(new ReturnMessage(0, "", "Consulta exitosa!", pedidos));
-		} catch (PedidoException e) {
-			// TODO Auto-generated catch block			
-			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_PEDIDO.getValue(), e.getStackTrace().toString(), e.getMessage(), "" ));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return(mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_IO.getValue(),e.getStackTrace().toString(),e.getMessage(),null)));
-		}
-	}
-	
+
 	
 	/** Modificación: Método para obtener los pedidos con un estado particular. **/
 	@RequestMapping(value = "/pedidos/", method = RequestMethod.GET, produces = "application/json")
@@ -152,39 +138,6 @@ public class HomeController {
 		}
 	}
 	
-	
-	/** Modificación: Método para obtener los pedidos con un estado particular. **/
-	@RequestMapping(value = "/pedidos/", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getPedidoByEstado(@RequestParam String estado) throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			List<PedidoView> pedidos = Controlador.getInstancia().getPedidoByEstado(estado);
-			return mapper.writeValueAsString(new ReturnMessage(0, "", "Consulta exitosa!", pedidos));
-		} catch (PedidoException e) {
-			// TODO Auto-generated catch block			
-			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_PEDIDO.getValue(), e.getStackTrace().toString(), e.getMessage(), "" ));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return(mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_IO.getValue(),e.getStackTrace().toString(),e.getMessage(),null)));
-		}
-	}
-	
-	
-	/** Modificación: Método para obtener todos los pedidos. **/
-	@RequestMapping(value = "/pedidos", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody String getPedidos() throws JsonProcessingException{
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			List<PedidoView> pedidos = Controlador.getInstancia().getPedidos();
-			return mapper.writeValueAsString(new ReturnMessage(0, "", "Consulta exitosa!", pedidos));
-		} catch (PedidoException e) {
-			// TODO Auto-generated catch block			
-			return mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_PEDIDO.getValue(), e.getStackTrace().toString(), e.getMessage(), "" ));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			return(mapper.writeValueAsString(new ReturnMessage(ErrorCode.ERROR_IO.getValue(),e.getStackTrace().toString(),e.getMessage(),null)));
-		}
-	}
 	
 	
 	/**Final**/
